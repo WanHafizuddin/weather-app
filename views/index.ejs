@@ -1,0 +1,85 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Forecast</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+  
+
+  <div class="weather-container">
+    <div class="weather-searchbar">
+      <input type="text" name="city" id="city-input" placeholder="Enter city">
+      <button onclick="fetchData()">Search</button></label>
+    </div>
+    <div class="weather-info">
+      <h1 id ="city-name"></h1>
+      <h1 id ="weather-id"></h1>
+    </div>
+  </div>
+
+<script src="index.js"type="text/javascript"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+  <div class="weather-container">
+    <div class="weather-searchbar">
+      <input type="text" id="city-input" placeholder="Enter city">
+      <button onclick="fetchData()">Get Weather</button>
+    </div>
+    <div class="weather-info">
+      <h1 id="city-name"></h1>
+      <h1 id="weather-id"></h1>
+    </div>
+  </div>
+
+  <script>
+    async function fetchData() {
+      const city = document.getElementById("city-input").value;
+      const url = `/weather?city=${city}`;
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Could not fetch data");
+        }
+
+        const data = await response.json();
+        console.log(data.weather[0].description);
+        console.log(data);
+
+        const cityElement = document.getElementById("city-name");
+        const weatherCondition = document.getElementById("weather-id");
+
+        if (cityElement && weatherCondition) {
+          let x = data.main.temp - 273.15;
+          cityElement.textContent = x.toFixed(2) + "°C"; 
+          weatherCondition.textContent = data.weather[0].description;
+        } else {
+          console.error("Element with ID 'city-name' or 'weather-id' not found.");
+        }
+      } catch (error) {
+        console.error("Error: ", error);
+        const cityElement = document.getElementById("city-name");
+        const weatherCondition = document.getElementById("weather-id");
+
+        if (cityElement && weatherCondition) {
+          cityElement.textContent = "City not found."; 
+          weatherCondition.textContent = "";
+        }
+      }
+    }
+  </script>
+</body>
+</html>
